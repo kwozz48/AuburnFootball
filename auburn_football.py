@@ -1,14 +1,17 @@
-# The purpose of this project is to demonstrate my proficiency with the Python language
+# This program allows the user to enter player or coach information for the Auburn football team
+# It also writes the input members data to a text file
 
-class Person ():
+import os
+
+class Person:
     def __init__(self, first_name, last_name, age):
         self.first_name = first_name
         self.last_name = last_name
         self.age = age
 
     def full_name_func (self):
-        full_name = self.first_name + ' ' + self.last_name
-        return (full_name)
+        self.full_name = self.first_name + ' ' + self.last_name
+        return (self.full_name)
 
 class Coach (Person): #Inherits from 'Person' class
     def __init__(self, first_name, last_name, age, title, pay, years_as_coach):
@@ -19,6 +22,8 @@ class Coach (Person): #Inherits from 'Person' class
 
     def apply_bonus (self):
         bonus = int(self.years_as_coach * .01 * self.pay)
+        self.pay = self.pay + bonus
+        self.bonus = bonus
 
         #2 ways to print the statement. Second way is commented out
         return ("\n{}'s base salary is ${}. {}'s bonus is ${}\n".format(self.full_name_func(), self.pay, self.full_name_func(), (bonus)))
@@ -34,13 +39,31 @@ class Player (Person): #Inherits from 'Person' class
     def print_info (self):
         print ("\n{} is a {} for the Auburn University football team. He is {} years old, {} ft tall, and {} lbs.\n".format(self.full_name_func(), self.position, self.age, self.height, self. weight))
 
+def create_database ():
+    #Creates text file with header for stored data
+    database_header = ['First Name   ', '   Last Name   ', '   Age   ']
+    file = open("auburn_database.txt", 'w')
+    for i in database_header:
+        file.write(i)
+    file.close()
+
+def add_member_to_database(*args):
+    #Adds members data to text file
+    file = open('auburn_database.txt', 'a')
+    file.write('\n')
+    for i in args:
+        file.write('   ' + i + '  ')
+    file.close()
+'''
+#Section is commented out. It is included to save time while testing/writing code
 Gus_Malzahn = Coach('Gus', 'Malzahn', 52, 'Head Coach', 7000000, 7)
 print(Gus_Malzahn.apply_bonus())
 Jarrett_Stidham = Player('Jarrett', 'Stidham', 24, 'QB', "6'"'2"', 215)
 print(Jarrett_Stidham.print_info())
-
-
+create_database()
+add_member_to_database(Gus_Malzahn.first_name, ' ', Gus_Malzahn.last_name, str(Gus_Malzahn.age))
 '''
+
 #Allows you to manually enter coaches' and players' info. Commented out to save time when testing program
 coaches = []
 players = []
@@ -82,6 +105,11 @@ while a < num_new_members:
 
 print (coaches[0].full_name_func())
 print (coaches[0].apply_bonus())
+create_database()
+#Writes info to data file
+add_member_to_database(coaches[0].first_name, ' ', coaches[0].last_name, str(coaches[0].age))
 print (players[0].full_name_func())
 print (players[0].print_info())
-'''
+create_database()
+#Writes info to data file
+add_member_to_database(players[0].first_name, ' ', players[0].last_name, str(players[0].age))
